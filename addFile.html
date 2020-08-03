@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Sophia's Harmony</title>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <!-- 부트스트랩 CSS 추가하기 -->
+
+    <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
+
+    <!-- 커스텀 CSS 추가하기 -->
+
+    <link rel="stylesheet" href="../resources/css/custom.css">
+
+    <link href="../resources/js/index.js">
+</head>
+<style>
+
+    .navbar-brand {
+        font-family: 'Lobster', cursive;
+    }
+
+    #borderimg2 {
+        text-align: right;
+        width: 1000px;
+        border-top: 10px solid transparent;
+        border-image: url(http://i.stack.imgur.com/bZ8Lk.png) 30 stretch;
+    }
+</style>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="height:200px; width:100%">
+
+    <a class="navbar-brand" href="index.jsp" style="width:100%; text-align:center;">&nbsp;&nbsp;Sophia's Harmony</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+
+        <span class="navbar-toggler-icon"></span>
+
+    </button>
+
+</nav>
+<body>
+    <div id="showbox" style="width:100%; text-align:center; padding-top:30px; padding-left:11%;padding-right:2%">
+        <div style="float:right">
+            <div style="padding-bottom:5px">
+                <button class="btn btn-warning" onclick="choice_click()" id="choice">선택</button>
+            </div>
+            <div style="text-align:left">
+                <span id="make_radio"></span>
+            </div>
+            <div style="text-align:left">
+                <span id="move_radio"></span>
+            </div>
+            <div style="text-align:left">
+                <span id="delete_radio"></span>
+            </div>
+
+        </div>
+
+        <div>
+            <div name="shelf" style="text-align:left">
+                <img src="../images/add_folder.svg" alt="" style="width:130px; height:150px;padding-right:15px;padding-left:15px">
+                <span id="add_image1"></span><!--add image-->
+                <p id="borderimg2" style="text-align:center;">
+            </div>
+        </div>
+
+
+    </div>
+    <div id="input" style="width:100%; text-align:center; padding-top:30px;padding-left:5%; padding-bottom:50px">
+        <input type="file" class="form-control" id="inputFile" placeholder="파일을 추가해주세요" style="display:inline-block; width:600px; text-align:center">
+        <button class="btn btn-primary" id="confirm" onclick="editShelf()" style="display:inline-block;text-align:center">추가</button>
+    </div>
+</body>
+<script>
+        function choice_click() {
+            sb_script = '<input type="radio" onclick="editProb.html" name="chk_info" value="문제생성"> 문제생성 '
+            document.getElementById("make_radio").innerHTML = sb_script
+            sb_script = '<input type="radio" name="chk_info" value="이동"> 이동 '
+            document.getElementById("move_radio").innerHTML = sb_script
+            sb_script = '<input type="radio" name="chk_info" value="삭제"> 삭제 '
+            document.getElementById("delete_radio").innerHTML = sb_script
+        }
+        function add_image() {
+            //이미지또는 폴더 추가하는 방법 구현
+        }
+</script>
+</html>
