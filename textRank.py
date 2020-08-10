@@ -1,20 +1,35 @@
+
 import re
+from konlpy.tag import Kkma
+from konlpy.utils import pprint
+import kss
+
+def clean_text(text):
+    #cleaned_text = re.sub('[a-zA-z]','',text)
+    cleaned_text = re.sub('[\{\}\[\]\/;:|\)*~`^\-_+<>@\#$%&\\\=\(\'\"\♥\♡\ㅋ\ㅠ\ㅜ\ㄱ\ㅎ\ㄲ\ㅡ]','',text)
+    return cleaned_text
 
 def no_space(text):
-    text1= re.sub('&nbsp; | &nbsp;| \n|\t|\r','',text)
-    text2=re.sub('\n\n','',text1)
-    return text2
+    pattern1=re.compile('\n\n')
+    text=re.sub(pattern1, " ", text)
+    pattern2=re.compile('\n')
+    text=re.sub(pattern2, "",text)
+    #text=re.sub('check','\n',text)
+    return text
 
 #-*- encoding:utf-8
 from tika import parser
-PDFfileName = 'test_kor.pdf'
+PDFfileName = 'test2.pdf'
 parsed = parser.from_file(PDFfileName)
-#print(parsed["content"])
 fileOut = open('fileOut.txt', 'w', encoding='utf-8')
 text=no_space(parsed['content'])
+text=clean_text(text)
 #print(parsed['content'], file=fileOut)
-print(text,file=fileOut)
+#print(text,file=fileOut)
+for sent in kss.split_sentences(text):
+    print(sent,file=fileOut)
 fileOut.close()
+
 
 #textRank 
 import networkx
@@ -208,7 +223,8 @@ tr = TextRank()
 print('Load...')
 from konlpy.tag import Komoran
 tagger = Komoran()
-stopword = set([('있', 'VV'), ('하', 'VV'), ('되', 'VV') ])
+stopword = set([('있', 'VV'), ('하', 'VV'), ('되', 'VV') ]) #VV는 동사
+#NNG - 일반명사, NNP - 고유명사, VV - 동사, VA - 형용사
 tr.loadSents(RawSentenceReader('fileOut.txt'), lambda sent: filter(lambda x:x not in stopword and x[1] in ('NNG', 'NNP', 'VV', 'VA'), tagger.pos(sent)))
 print('Build...')
 tr.build()
@@ -216,7 +232,7 @@ ranks = tr.rank()
 sentenceFile = open('sentenceFile.txt', 'w', encoding='utf-8')
 for k in sorted(ranks, key=ranks.get, reverse=True)[:100]:
     print("\t".join([str(k), str(ranks[k]), str(tr.dictCount[k])]),file=sentenceFile)
-print(tr.summarize(0.2),file=sentenceFile)
+print(tr.summarize(0.2))
 sentenceFile.close()
 
 #extracting keywords
