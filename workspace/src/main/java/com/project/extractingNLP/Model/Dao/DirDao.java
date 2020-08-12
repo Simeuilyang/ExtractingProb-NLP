@@ -40,7 +40,7 @@ public class DirDao extends Dao {
         return jsonResults;
     }
 
-    //새 디렉토리 추가
+    //�깉 �뵒�젆�넗由� 異붽�
     public boolean addDir(int did, int pdid, String dname, String aid) throws SQLException {
         try {
             holdConnection();
@@ -59,8 +59,8 @@ public class DirDao extends Dao {
         }
     } 
    
-    //moveDir 디렉토리 이동
-    //did: 이동시키려는 디렉토리id, pdid: 이동하려는 디렉토리id 
+    //moveDir �뵒�젆�넗由� �씠�룞
+    //did: �씠�룞�떆�궎�젮�뒗 �뵒�젆�넗由촫d, pdid: �씠�룞�븯�젮�뒗 �뵒�젆�넗由촫d 
     public boolean moveDir(int did, int pdid) throws SQLException {
         try { 
             holdConnection();
@@ -87,7 +87,34 @@ public class DirDao extends Dao {
         }
     }
     
-    //deleteDir 디렉토리 삭제 - 속해있는 파일, 디렉토리 모두 삭제
+    public JSONArray findDirs(String aid, int pdid) throws SQLException{
+    	String query = "select d.did, d.pdid, d.dname, d.aid "
+    			+ "from dir d, account a "
+    			+ "where d.aid = a.id "
+    			+ "and d.pdid = " + pdid
+    			+ " and a.id = '" + aid
+    			+ "' and d.did != -1";
+    	System.out.println(query);
+    	return executeQuery(query);
+    }
+    
+    public boolean renameFile(int did, String newName) throws SQLException{
+		try { 
+            holdConnection();
+            String sql = " UPDATE DIR SET"
+					+ " DNAME = '" + newName
+					+ "' WHERE DID = " + did;
+			
+			executeSQL(sql);
+			
+			return true;
+        } catch (SQLException e) {
+            System.err.println("! SQL ERROR (return item) : " + e.getMessage());
+            return false;
+        }
+	}
+    
+    //deleteDir �뵒�젆�넗由� �궘�젣 - �냽�빐�엳�뒗 �뙆�씪, �뵒�젆�넗由� 紐⑤몢 �궘�젣
     public boolean deleteDir(int did) throws SQLException {
         try { 
             holdConnection();
@@ -102,7 +129,7 @@ public class DirDao extends Dao {
 //            }
             
 //            String sql = "DELETE FROM DIR"
-//            		+ " WHERE DID = " + did; //해당 did 디렉토리 삭제 -> on delete cascade 떄문에 속한 파일 같이 삭제됨
+//            		+ " WHERE DID = " + did; //�빐�떦 did �뵒�젆�넗由� �궘�젣 -> on delete cascade �뻹臾몄뿉 �냽�븳 �뙆�씪 媛숈씠 �궘�젣�맖
 //            	
 //            executeSQL(sql);
             
@@ -121,9 +148,9 @@ public class DirDao extends Dao {
             	childDir.add(deletedid); 
             }
             
-            System.out.println("childDir 리스트에 바로밑 하위 디렉토리id 저장");
+            System.out.println("childDir 由ъ뒪�듃�뿉 諛붾줈諛� �븯�쐞 �뵒�젆�넗由촫d ���옣");
             
-            // 큐 써서 해보기 !!!!!!//
+            // �걧 �뜥�꽌 �빐蹂닿린 !!!!!!//
             for(int id : childDir) { 
             	sql = "SELECT D2.DID"
                 		+ " FROM DIR D1 INNER JOIN DIR D2 ON D1.DID = D2.PDID"
@@ -135,18 +162,18 @@ public class DirDao extends Dao {
                  	childDir.add(deletedid);
                  }
             }
-            System.out.println("그 하위 디렉토리도 리스트에 저장");
+            System.out.println("洹� �븯�쐞 �뵒�젆�넗由щ룄 由ъ뒪�듃�뿉 ���옣");
             
             for(int id : childDir) { 
             	sql = "DELETE FROM DIR"
                 		+ " WHERE DID = " + id;
             	executeSQL(sql);
             }
-            System.out.println("속한 디렉토리들도 모두 삭제");
+            System.out.println("�냽�븳 �뵒�젆�넗由щ뱾�룄 紐⑤몢 �궘�젣");
             
             sql = "DELETE FROM DIR"
-            		+ " WHERE DID = " + did; //해당 did 디렉토리 삭제 -> on delete cascade 떄문에 속한 파일 같이 삭제됨
-            System.out.println("원래 삭제하려던 디렉토리 삭제 => 속한 파일들도 삭제");
+            		+ " WHERE DID = " + did; //�빐�떦 did �뵒�젆�넗由� �궘�젣 -> on delete cascade �뻹臾몄뿉 �냽�븳 �뙆�씪 媛숈씠 �궘�젣�맖
+            System.out.println("�썝�옒 �궘�젣�븯�젮�뜕 �뵒�젆�넗由� �궘�젣 => �냽�븳 �뙆�씪�뱾�룄 �궘�젣");
             
             executeSQL(sql);
             return true;

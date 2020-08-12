@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Built-By: Jungdayoon
-Build-Jdk: 13.0.1
+Built-By: dmlfi
+Build-Jdk: 12
 Created-By: Maven Integration for Eclipse
 

@@ -41,7 +41,7 @@ public class FileDao extends Dao {
         return jsonResults;
     }
     
-    //수정했음
+    //�닔�젙�뻽�쓬
     public JSONArray getFiles(String id) throws SQLException {
         JSONArray files = new JSONArray();
         String query = 
@@ -70,7 +70,23 @@ public class FileDao extends Dao {
         return files;
     }
 
-    //findFiles: 사용자 id와 그 사용자의 디렉토리 id에 속하는 파일 찾기
+    public boolean renameFile(int fid, String newName) throws SQLException{
+		try {
+			holdConnection();
+			String sql = " UPDATE FILELIST SET"
+					+ " FNAME = '" + newName
+					+ "' WHERE FID = " + fid;
+			
+			executeSQL(sql);
+			return true;
+		}catch(SQLException e) {
+			System.err.println("! SQL ERROR (return item) : " + e.getMessage());
+			return false;
+		}
+	}
+    
+    
+    //findFiles: �궗�슜�옄 id�� 洹� �궗�슜�옄�쓽 �뵒�젆�넗由� id�뿉 �냽�븯�뒗 �뙆�씪 李얘린
     public JSONArray findFiles(String id, int did) throws SQLException {
         String query = "select f.fid, f.pdid, f.fname, f.aid " + 
         		"from account a, dir d, filelist f " + 
@@ -83,7 +99,7 @@ public class FileDao extends Dao {
         return executeQuery(query);
     }
     
-	//새file 추가
+	//�깉file 異붽�
 	public boolean addFile(int fid, int pdid, String fname, String aid) throws SQLException {
 	        try {
 	            holdConnection();
@@ -103,8 +119,8 @@ public class FileDao extends Dao {
 	    }
 
 
-	//moveFile 파일 이동 
-	//fid: 이동시키려는 파일id, movdid:이동하려는 디렉토리id 
+	//moveFile �뙆�씪 �씠�룞 
+	//fid: �씠�룞�떆�궎�젮�뒗 �뙆�씪id, movdid:�씠�룞�븯�젮�뒗 �뵒�젆�넗由촫d 
 	public boolean moveFile(int fid, int movdid) throws SQLException {
 	    try { 
 	        holdConnection();
@@ -120,8 +136,8 @@ public class FileDao extends Dao {
 	    }
 	}
 
-	//deleteFile 파일 삭제
-	//fid: 삭제하려는 파일 id
+	//deleteFile �뙆�씪 �궘�젣
+	//fid: �궘�젣�븯�젮�뒗 �뙆�씪 id
 	public boolean deleteFile(int fid) throws SQLException {
 	    try { 
 	        holdConnection();

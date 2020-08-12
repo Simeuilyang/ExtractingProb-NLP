@@ -30,4 +30,35 @@ public class FileController {
 		
     }
 	
+	@ResponseBody
+	@GetMapping("/file/add/{fid}/{pdid}/{fname}/{aid}")
+	public boolean addFile(@PathVariable("fid") int fid, @PathVariable("pdid") int pdid, @PathVariable("fname") String fname, @PathVariable("aid") String aid) throws SQLException {
+	  System.out.println("fid, pdid, fname, aid: " + fid + " " + pdid + " " + "fname" + " " + aid);
+	      
+	  return fDao.addFile(fid, pdid, fname, aid);
+	}
+	
+	@ResponseBody
+	@GetMapping("/file/delete/{fid}")
+	public boolean deleteFile(@PathVariable("fid") int fid) throws SQLException {
+		System.out.println("DELETE FILE!   fid: " + fid);
+		return fDao.deleteFile(fid);
+	}
+	
+	@ResponseBody
+	@GetMapping("/file/move/{fid}/{movdid}")
+	public boolean moveFile(@PathVariable("fid") int fid, @PathVariable("movdid") int movdid) throws SQLException {
+		System.out.println("MOVE FILE!! fid:" + fid + " did:" + movdid);
+		   
+		return fDao.moveFile(fid, movdid);
+	}
+	
+	@ResponseBody
+	@GetMapping("/file/rename/{fid}/{newName}")
+	public boolean renameFile(@PathVariable("fid") int fid, @PathVariable("newName") String newName) throws SQLException{
+		System.out.println("RENAME FILE!!");
+		   
+		return fDao.renameFile(fid, newName);
+	}
+	
 }
