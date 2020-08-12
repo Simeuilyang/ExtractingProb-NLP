@@ -53,7 +53,6 @@ if __name__ == '__main__':
         listen_port = args.listen_port
     except Exception, e:
         print('Error: %s' % str(e))
-    #TODO bctak: Need to select one IP that is externally visible. Currently, it just picks the first one.
     ipaddr=commands.getoutput("hostname -I").split()[0]
     print "Starting the service with ip_addr="+ipaddr
     app.run(debug=True,host=ipaddr,port=int(listen_port),threaded=True)
