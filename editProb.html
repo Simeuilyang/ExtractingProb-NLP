@@ -2,14 +2,13 @@
 <html>
 <head>
 
-    <title>Sophia's Harmony</title>
+    <title>__Blank__</title>
 
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
     <!-- 부트스트랩 CSS 추가하기 -->
-
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
 
     <!-- 커스텀 CSS 추가하기 -->
@@ -37,7 +36,7 @@
 </style>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height:80px; width:100%">
 
-    <a class="navbar-brand" href="index.jsp" style="width:100%; text-align:center;">&nbsp;&nbsp;Sophia's Harmony</a>
+    <a class="navbar-brand" href="index.jsp" style="width:100%; text-align:center;">&nbsp;&nbsp;__Blank__</a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 
@@ -47,16 +46,11 @@
 
 </nav>
 <body>
-    <div class="card">
+    <div class="card" style="width:50%;float:left">
         <!--                            -->
         <h4 class="card-header text-center font-weight-bold text-uppercase py-4">Editable table</h4>
         <div class="card-body" style="padding:30px">
             <div id="table" class="table-editable">
-                <span class="table-add float-right mb-3 mr-2">
-                    <a href="#!" class="text-success">
-                        <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
-                    </a>
-                </span>
                 <table class="table table-bordered table-responsive-md table-striped text-center">
                     <thead>
                         <tr>
@@ -70,7 +64,7 @@
                             <td class="pt-3-half" contenteditable="true"><span id="q1"></span></td>
                             <td class="pt-3-half">
                                 <span class="table-up">
-                                    <a href="../images/up.png" class="indigo-text">
+                                    <a href="#!" class="indigo-text">
                                         <i class="fas fa-long-arrow-alt-up"></i>
                                         <!-- aria-hidden="true" -->
                                     </a>
@@ -175,16 +169,12 @@
         </div>
 
 
-
-
+    </div>
+    <div class="card" style="width:50%; display:inline-block">
         <h4 class="card-header text-center font-weight-bold text-uppercase py-4">removed table</h4>
         <div class="card-body" style="padding:30px">
             <div id="table" class="table-editable">
-                <span class="table-add float-right mb-3 mr-2">
-                    <a href="#!" class="text-success">
-                        <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
-                    </a>
-                </span>
+                
                 <table class="table table-bordered table-responsive-md table-striped text-center">
                     <thead>
                         <tr>
@@ -224,6 +214,8 @@
                     </tbody>
                 </table>
             </div>
+    </div>
+        
 
         </div>
         <div style="padding:10px; text-align:right">
@@ -231,8 +223,65 @@
             <button class="btn btn-primary">풀어보기</button>
         </div>
         <script>
-        document.getElementById("q1").innerHTML = "김소빈"//텍스트파일불러와서 span에 넣어주기
+            const $tableID = $('#table');
+            const $BTN = $('#export-btn');
+            const $EXPORT = $('#export');
 
+            //$tableID.on('click', '.table-remove', function () {
+
+            //$(this).parents('tr').detach();
+            //});
+
+            $tableID.on('click', '.table-up', function () {
+
+            const $row = $(this).parents('tr');
+
+            if ($row.index() === 0) {
+                return;
+            }
+
+            $row.prev().before($row.get(0));
+            });
+
+            $tableID.on('click', '.table-down', function () {
+
+            const $row = $(this).parents('tr');
+            $row.next().after($row.get(0));
+            });
+
+            // A few jQuery helpers for exporting only
+            jQuery.fn.pop = [].pop;
+            jQuery.fn.shift = [].shift;
+
+            $BTN.on('click', () => {
+
+            const $rows = $tableID.find('tr:not(:hidden)');
+            const headers = [];
+            const data = [];
+
+            // Get the headers (add special header logic here)
+            $($rows.shift()).find('th:not(:empty)').each(function () {
+
+                headers.push($(this).text().toLowerCase());
+            });
+
+            // Turn all existing rows into a loopable array
+            $rows.each(function () {
+                const $td = $(this).find('td');
+                const h = {};
+
+                // Use the headers from earlier to name our hash keys
+                headers.forEach((header, i) => {
+
+                h[header] = $td.eq(i).text();
+                });
+
+                data.push(h);
+            });
+
+            // Output the result
+            $EXPORT.text(JSON.stringify(data));
+            });
         </script>
 </body>
 
