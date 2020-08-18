@@ -6,7 +6,8 @@ import kss
 
 #-*- encoding:utf-8
 from tika import parser
-PDFfileName = 'test1.pdf'
+path='/Users/han-eunju/Documents/textRank/ExtractingProb-NLP-1/'
+PDFfileName = path + 'test1.pdf'
 parsed = parser.from_file(PDFfileName, xmlContent=True)
 fileOut = open('fileOut.xml', 'w', encoding='utf-8')
 print(parsed['content'], file=fileOut)
@@ -48,14 +49,16 @@ for sent in kss.split_sentences(tot_content):
     print(sent,file=fileOut)
 #print(tot_content,file=fileOut)
 
-#<p>tag 첫번째가 숫자를 포함하면, 첫번째 <p> tag remove
-fileOut.close
+fileOut.close()
 
 
 #textRank 
 import networkx
 import re
- 
+keywordFile = open('keywordFile.txt', 'w', encoding='utf-8')
+sentenceFile = open('sentenceFile.txt', 'w', encoding='utf-8')
+
+
 class RawSentence:
     def __init__(self, textIter):
         if type(textIter) == str: self.textIter = textIter.split('\n')
@@ -205,7 +208,7 @@ class TextRank:
                 if pmi: pairness[k, l] = pmi
  
         for (k, l) in sorted(pairness, key=pairness.get, reverse=True):
-            print(k[0], l[0], pairness[k, l])
+            print(k[0], l[0], pairness[k, l],file=keywordFile)
             if k not in startOf: startOf[k] = (k, l)
  
         for (k, l), v in pairness.items():
@@ -250,21 +253,19 @@ tr.loadSents(RawSentenceReader('fileOut.txt'), lambda sent: filter(lambda x:x no
 print('Build...')
 tr.build()
 ranks = tr.rank()
-sentenceFile = open('sentenceFile.txt', 'w', encoding='utf-8')
 for k in sorted(ranks, key=ranks.get, reverse=True)[:100]:
     print("\t".join([str(k), str(ranks[k]), str(tr.dictCount[k])]),file=sentenceFile)
-print(tr.summarize(0.2))
+print(tr.summarize(0.2),file=sentenceFile)
 sentenceFile.close()
 
 #extracting keywords
 tr = TextRank(window=5, coef=1)
 print('Load...')
 stopword = set([('있', 'VV'), ('하', 'VV'), ('되', 'VV'), ('없', 'VV') ])
-tr.load(RawTaggerReader('fileOut.txt'), lambda w: w not in stopword and (w[1] in ('NNG', 'NNP', 'VV', 'VA')))
+tr.load(RawTaggerReader('fileOut.txt'), lambda w: w not in stopword and (w[1] in ('NNG', 'NNP')))
 print('Build...')
 tr.build()
 kw = tr.extract(0.1)
-keywordFile = open('keywordFile.txt', 'w', encoding='utf-8')
 for k in sorted(kw, key=kw.get, reverse=True):
     print("%s\t%g" % (k, kw[k]), file=keywordFile)
 keywordFile.close()
