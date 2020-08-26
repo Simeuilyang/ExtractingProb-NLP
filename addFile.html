@@ -5,11 +5,9 @@
     <title>Sophia's Harmony</title>
 
     <meta charset="utf-8">
-
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;800&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-    <!-- 부트스트랩 CSS 추가하기 -->
-
+    
     <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
 
     <!-- 커스텀 CSS 추가하기 -->
@@ -17,13 +15,13 @@
     <link rel="stylesheet" href="../resources/css/custom.css">
 
     <link href="../resources/js/index.js">
+    <link rel="stylesheet" href="../css/dropdown.css">
 </head>
 <style>
-
+    
     .navbar-brand {
         font-family: 'Lobster', cursive;
     }
-
     #borderimg2 {
         text-align: right;
         width: 1000px;
@@ -31,17 +29,53 @@
         border-image: url(http://i.stack.imgur.com/bZ8Lk.png) 30 stretch;
     }
 </style>
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="height:200px; width:100%">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="height:80px; width:100%">
 
-    <a class="navbar-brand" href="index.jsp" style="width:100%; text-align:center;">&nbsp;&nbsp;Sophia's Harmony</a>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
-
+    <a class="navbar-brand" href="index.jsp" style="width:100%; text-align:center; padding-left:10px">&nbsp;&nbsp;_blank</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" style="width:320px">
+        
         <span class="navbar-toggler-icon"></span>
-
     </button>
-
+    
 </nav>
+    <!-- dropdown 시작 -->
+    <div id="dropdown" style="margin-bottom:0px">
+        <div style="width:170px; height:40px; text-align:right; display:inline-block;margin-bottom:0px">
+            <a href="../../index.html" data-lnb="home"><img src="../image/icon_home.svg" alt="" style="width:35px; height:35px; padding:5px"></a>
+        
+        </div>
+        <div style="width:80px; height:40px; text-align:center; display:inline-block;margin-bottom:0px">
+            <a href="#" data-lnb="home"><img src="../image/back.png" alt="" style="width:35px; height:35px; padding:5px"></a>
+            
+        </div>
+
+        <div style = "display:inline-block;margin-bottom:0px">
+        
+            <div class="dropdown" style = "margin-bottom:0px">
+                <button class="dropbtn">부모 디렉토리</button>
+                <div class="dropdown-content">
+                <a href="#">홈</a>
+                <a href="#">회사소개</a>
+                <a href="#">제품소개</a>
+                <a href="#">오시는길</a>
+                </div>
+            </div>
+            <div class="dropdown"  style = "margin-bottom:0px">
+                <button class="dropbtn">현재 디렉토리</button>
+                <div class="dropdown-content">
+                <a href="#">홈</a>
+                <a href="#">회사소개</a>
+                <a href="#">제품소개</a>
+                <a href="#">오시는길</a>
+                </div>
+            </div>
+        </div>
+        <hr style = "margin-top:0px">
+    </div>
+    <!-- dropdown 끝 -->
+    
+
+
 <body>
     <div id="showbox" style="width:100%; text-align:center; padding-top:30px; padding-left:11%;padding-right:2%">
         <div style="float:right">
@@ -49,20 +83,19 @@
                 <button class="btn btn-warning" onclick="choice_click()" id="choice">선택</button>
             </div>
             <div style="text-align:left">
-                <span id="make_radio"></span>
-            </div>
-            <div style="text-align:left">
-                <span id="move_radio"></span>
-            </div>
-            <div style="text-align:left">
-                <span id="delete_radio"></span>
+                <input type="radio" onclick="window.open('editProb.html', '_blank', 'width=가로사이즈px,height=세로사이즈px,toolbars=no'); return false;" name="chk_info" value="문제생성"> 문제생성<br>
+                <a href="URL" onclick="window.open(this.href, '_blank', 'width=가로사이즈px,height=세로사이즈px,toolbars=no,scrollbars=no'); return false;">문제생성</a>
+
+                <input type="radio" name="chk_info" value="이동"> 이동<br />
+
+                <input type="radio" name="chk_info" value="삭제"> 삭제<br>
             </div>
 
         </div>
 
         <div>
             <div name="shelf" style="text-align:left">
-                <img src="../images/add_folder.svg" alt="" style="width:130px; height:150px;padding-right:15px;padding-left:15px">
+                <img src="../image/add_folder.svg" alt="" style="width:130px; height:150px;padding-right:15px;padding-left:15px">
                 <span id="add_image1"></span><!--add image-->
                 <p id="borderimg2" style="text-align:center;">
             </div>
@@ -77,7 +110,7 @@
 </body>
 <script>
         function choice_click() {
-            sb_script = '<input type="radio" onclick="editProb.html" name="chk_info" value="문제생성"> 문제생성 '
+            sb_script = '<button class="btn btn-primary" onclick="location.href='+"editProb.html"+'" name="chk_info" value="문제생성"> 문제생성 '
             document.getElementById("make_radio").innerHTML = sb_script
             sb_script = '<input type="radio" name="chk_info" value="이동"> 이동 '
             document.getElementById("move_radio").innerHTML = sb_script
