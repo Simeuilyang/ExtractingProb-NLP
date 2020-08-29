@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>__Blank__</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- 부트스트랩 CSS 추가하기 -->
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
+
+    <!-- 커스텀 CSS 추가하기 -->
+    <script src="../resources/js/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="../resources/css/custom.css">
+
+
+</head>
+<style>
+    td.check{ 
+        background-image: url(../image/yes.png);
+        background-repeat: no-repeat; 
+        background-position: left top; 
+        vertical-align: top;
+        height:20px;
+        width:20px;
+    }
+    .navbar-brand {
+        font-family: 'Lobster', cursive;
+    }
+
+    #borderimg2 {
+        text-align: right;
+        width: 1000px;
+        border-top: 10px solid transparent;
+        border-image: url(http://i.stack.imgur.com/bZ8Lk.png) 30 stretch;
+    }
+
+    .pt-3-half {
+        padding-top: 1.4rem;
+    }
+</style>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="height:80px; width:100%">
+
+    <a class="navbar-brand" href="index.jsp" style="width:100%; text-align:center;">&nbsp;&nbsp;__Blank__</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+
+        <span class="navbar-toggler-icon"></span>
+
+    </button>
+
+</nav>
+<body>
+    <div class="card">
+        <div class="card-body" style="padding:30px">
+            <div id="table" class="table-editable">
+                <span class="table-add float-right mb-3 mr-2">
+                    <a href="#!" class="text-success">
+                        <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+                    </a>
+                </span>
+                <table class="table table-bordered table-responsive-md table-striped text-center" id='exportTable'>
+                    <thead>
+                        <tr>
+                            <th class="text-center">&nbsp;</th>
+                            <th class="text-center" style="width:90%" id="question">Question</th>
+                            <th class="text-center" id="answer">정답</th>
+                        </tr>
+                    </thead>
+                    <tbody id="final_table_item"></tbody>
+                </table>
+            </div>
+        </div>
+    
+
+
+    </div>
+</div>
+        <div style="float:right;padding:2px; text-align:right; display:inline-block">
+            <button class="btn btn-primary" onclick="checkAnswer()">채점하기</button>
+        </div>
+        <div style="float:right;padding:2px; text-align:right; display:inline-block">
+            <button class="btn btn-primary"  value="Export" onclick='createPDF()' id="exportButton">다운로드</a>
+        </div>
+</body>
+
+<script type="text/javascript" src="../resources/js/jspdf.min.js" rel="stylesheet"></script>
+<script type="text/javascript" src="../resources/js/html2canvas.js" rel="stylesheet"></script>
+
+<script>
+    function createPDF() {
+        var sTable = document.getElementById('table').innerHTML;
+    
+        var style = "<style>";
+        style = style + "table {width: 100%;font: 12px Calibri;}";
+        style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse; height:20px;";
+        style = style + "padding: 2px 3px;text-align: center;}";
+        style = style + "</style>";
+
+        // CREATE A WINDOW OBJECT.
+        var win = window.open('', '', 'height=450,width=700');
+        
+        win.document.write('<html><head>');
+        win.document.write('<title>_blank_</title>');    //<title> FOR PDF HEADER.
+        win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
+        win.document.write('</head>');
+        win.document.write('<body>');
+        win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
+        win.document.write('</body></html>');
+
+        win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+
+        win.print();    // PRINT THE CONTENTS.
+    }
+</script>
+<script>
+    function start(){
+        var question = ["전자책도 독자가 ‘사고 싶은’ &nbsp;<input type='text' id='answer_0' style='width:100px; text-align:center;'></span>&nbsp;를 담은 책이 많이 팔립니다.", "우리는 &nbsp;<input type='text' id='answer_1' style='width:100px; text-align:center;'></span>&nbsp;를 상품으로 만드는 일이 본업인 ‘책을 내는 출판사’입니다.", "책은 인간의 생각과 문화를 담은 &nbsp;<input type='text' id='answer_2'style='width:100px; text-align:center;'></span> &nbsp;저장소이다."];//textrank로 만든 question을 이 array에 담기
+        $('#final_table_item').empty();
+        for (var i in question){
+            
+            now_question = question[i]
+            var num = i;
+
+            var rowItem = "<tr>"
+            rowItem += "<td id='check"+i+"' style='background-image: url(#); visibility:none;background-repeat: no-repeat; background-position: left top; vertical-align: top; height:20px; width:20px;background-size: 100%'>"+ (++num) +".</td>"
+            rowItem += "<td class = 'pt-3-half' contenteditable = 'true'>" + now_question + "<span id = 'data_"+i+"' style='color:red;float:right; font-size:small'>&nbsp;</span></td>"
+            rowItem += "<td><span class = 'table-remove'><button type = 'button' class = 'btn btn-danger btn-rounded btn-sm my-0' value = '"+i+"' id = '"+i+"' onclick = 'showAnswer(this.value)'>정답보기</button></span></td>"
+            
+        
+            $('#final_table_item').append(rowItem)
+        }
+    }
+    
+</script>
+<script>
+    function showAnswer(i){
+        var answer = ["김소빈", "천재", "짱"]//답 받는 배열
+            if($("#"+i).text() == "정답보기"){
+                $("#"+i).html("정답숨김")
+                $("#data_"+i).text("* "+answer[i])
+            }
+            else{
+                $("#"+i).html("정답보기")
+                $("#data_"+i).text(" ")
+            }
+                
+            
+            //var sentence = $("#data_"+i).text()
+            
+    }
+    function checkAnswer(){
+        var answer = ["김소빈", "천재", "짱"]
+        for (var i in answer){
+            $("#data_"+i).text("* "+answer[i])
+            var check = $("#answer_"+i).val()
+            console.log(check)
+            if (check == answer[i]){
+                console.log("성공")
+                $("#check"+i).css('display','none');
+                
+            }
+            else{
+                console.log("실패")
+                $("check_"+i).css('span')
+                jQuery("#check"+i).css('display','url(../image/yes.png)');
+                
+            }
+            
+        }
+
+        
+        
+    }
+</script>
+<script>
+    start()
+</script>
+</html>
+<!-- 참고 사이트: https://mdbootstrap.com/docs/jquery/tables/editable/#! -->
+<!-- 동적 테이블 생성 : https://lasdri.tistory.com/594 -->
+<!-- 드래그앤드롭(sort) 참고 사이트: https://developer.mozilla.org/ko/docs/Web/API/HTML_%EB%93%9C%EB%9E%98%EA%B7%B8_%EC%95%A4_%EB%93%9C%EB%A1%AD_API  -->
+<!-- remove 클릭시 테이블에서는 요소 빼고 변수에 저장해뒀다가 리무브드테이블에 다시 작성-->
+<!-- add 클릭시 테이블에서는 요소 빼고 변수에 저장해뒀다가 에디터블테이블에 다시 작성 -->
