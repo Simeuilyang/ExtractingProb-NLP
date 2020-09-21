@@ -6,7 +6,8 @@ import kss
 
 #-*- encoding:utf-8
 from tika import parser
-PDFfileName = 'test1.pdf'
+path='/Users/han-eunju/Documents/textRank/ExtractingProb-NLP-1/'
+PDFfileName = path + 'test1.pdf'
 parsed = parser.from_file(PDFfileName, xmlContent=True)
 fileOut = open('fileOut.xml', 'w', encoding='utf-8')
 print(parsed['content'], file=fileOut)
