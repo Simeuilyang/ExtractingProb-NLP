@@ -191,7 +191,6 @@ for(var i = 0; i<filename.length; i++)
 //var tmp_answer = sessionStorage.getItem("answer");
 //var answer = JSON.parse(tmp_answer);
 
-//var answer = [["심의량", "바보"],["정다윤"],["나지혜"],["김소빈"],["한은주","쌍수","성공기원"],["술"],["마싯게먹어"],["ㅅㄱ"],["ㅃㅇ"]];
 console.log(result);
 console.log(question);
 console.log(answer);
